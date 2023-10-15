@@ -11,6 +11,8 @@ According to the developer of itty.bitty, most browsers support a minimum of [20
 - [alcor's itty-bitty](https://github.com/alcor/itty-bitty)
 
 ## To-do
+- Save as text file button
+- Drag text file into field
 - Anything that looks like encoded material in the text itself causes the decoder to choke. 
   - It is possible this is a problem with encoding
 - Implement a YAML metadata function (to fill `<meta>` head elements like `<title>`)
