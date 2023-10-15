@@ -11,23 +11,40 @@
 *{margin:0}
 #pre{max-width:625px;max-width:80ch;white-space:pre-wrap;margin:8px;height:calc(100vh - 16px);}
 #pre:empty::before{content:"Type Here";color:grey;}
+button{position:absolute;right:20px;bottom:10px}
 @media (max-width:40em){body{font-size:16px}}
 </style>
 <noscript><style>#pre{display:none}#pre:empty::before{content:""}</style></noscript>
 </head>
 <body>
-<pre id="pre" contentEditable="true"></pre>
+<pre id="pre"></pre>
+<button id="button">Save to File</button>
 <script>
-var pre = document.getElementById("pre"); 
+
+var pre = document.getElementById("pre");
+pre.setAttribute("contenteditable", "true");
+pre.contentEditable="plaintext-only";
+
 var inputString = window.location.search.substring(1); 
 var processedString = LZString.decompressFromEncodedURIComponent(inputString);
 
 pre.innerHTML = processedString;
-pre.addEventListener("blur", function(event) {
-if (pre.innerHTML != processedString) {
-var compressPre = LZString.compressToEncodedURIComponent(pre.innerHTML);
-window.location.search = compressPre;
-}
+pre.addEventListener("blur", function() {
+  if (pre.innerHTML != processedString) {
+  var compressPre = LZString.compressToEncodedURIComponent(pre.innerHTML);
+  window.location.search = compressPre;
+  }
+});
+
+var button = document.getElementById("button");
+button.addEventListener("click", function(){
+  var blob = new Blob([pre.innerHTML], {type: "text/plain"});
+  var bloburl = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = bloburl;
+  a.download = "txt-e1e1e1.txt";
+  a.click();
+  URL.revokeObjectURL(blob);
 });
 
 if (processedString.substring(3) == "---"){
