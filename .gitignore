@@ -1,6 +1,7 @@
 # Design Files#
 *.pxd
 *.bbprojectd
+*.command
 
 
 # OS generated files #
