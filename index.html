@@ -17,18 +17,13 @@
 <noscript><style>#pre{display:none}#pre:empty::before{content:""}</style></noscript>
 </head>
 <body>
-<pre id="pre"></pre>
+<pre id="pre" autofocus></pre>
 <div id="buttons">
   <button id="button">Save to File</button>
   <button id="about">About</button>
 </div>
 <script>
-function setURL(input){
-  var search = "?" + input;    
-  window.history.replaceState({}, '', search);
-}
-
-var pre = document.getElementById("pre");
+var pre = document.querySelector("#pre");
 pre.setAttribute("contenteditable", "true");
 pre.contentEditable="plaintext-only";
 
@@ -36,14 +31,36 @@ var inputString = window.location.search.substring(1);
 var processedString = LZString.decompressFromEncodedURIComponent(inputString);
 
 pre.innerHTML = processedString;
-pre.addEventListener("blur", function() {
+document.execCommand('selectAll', false, null);
+document.getSelection().collapseToEnd();
+
+function setURL(input){
+  var search = "?" + input;    
+  window.history.replaceState({}, '', search);
+}
+
+function compare(){
   if (pre.innerHTML != processedString) {
-  var compressPre = LZString.compressToEncodedURIComponent(pre.innerHTML);
-  setURL(compressPre);
-  }
+      var compressPre = LZString.compressToEncodedURIComponent(pre.innerHTML);
+      var search = "?" + compressPre;    
+      window.history.replaceState({}, '', search);
+    }
+}
+
+pre.addEventListener("blur", function() {
+  compare()
 });
 
-var button = document.getElementById("button");
+let timer;
+pre.addEventListener('keyup', (e) => {
+  const text = e.currentTarget.value;
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    compare()
+  }, 1000);
+});
+
+var button = document.querySelector("#button");
 button.addEventListener("click", function(){
   var blob = new Blob([pre.innerHTML], {type: "text/plain"});
   var bloburl = URL.createObjectURL(blob);
@@ -54,16 +71,17 @@ button.addEventListener("click", function(){
   URL.revokeObjectURL(blob);
 });
 
-var button = document.getElementById("about");
+var button = document.querySelector("#about");
 button.addEventListener("click", function(){
  var about = "JIWwhg5glgdgpgAgJ4HsCuCDuYYBcG4oIDOAFmAE6JgBG6+AjAAwtYoUAmxCKAZgXAAe+TFFykSKEHBTwAdAgDKaKgBpk6BAGN0AGw4EkAB0RiEaIwlgIwCAOrsDHFFrTS8NmAegA3U-lsYKC1EXll8dixyXDg-CnUaNHxUDGwPQhJyKisImAJSREw4GgU7aKt+cThs7G5bbCQCIjJKf3NiWAgbBABVACUAGQB+e3KofhSbXWIiNJiDMwyaRDjGtBhiXFpdOHUcA3g4hF0oPx4822JquKGAKFuAMghcAG4n14JhOTgGH5+5eD4B66V7A173MpwPKTXDGXbdYhaChQIz4HQgIxUYhXYgAeihOg4cG4VQEwiseCINDAVwAbAAWfJgfBQbibdhwBZ5Un9AZ7LxRKH5RC8qzcXQoMBEhb4ImE4m4oyUHHCsm4BQAURpjRM2oUwCwrIkBp0aH0CF4UAgKkQ9G6aCuAFotDS4HJ7gBBabNKRwXBQaTccYaDC4CiNDInGAAayanhQVQon3Vf1+DABfoQSogbQAVg78DQqGBo8R9YBMAhACBgCbYFGRnJsdCSOXUpFkxNwuiQ7qAA"
-  setURL(about);
   pre.innerHTML = LZString.decompressFromEncodedURIComponent(about);
+  compare();
   pre.focus();
   // Hacky set cursor to the end
   document.execCommand('selectAll', false, null);
   document.getSelection().collapseToEnd();
 });
+
 /* if (processedString.substring(3) == "---"){
 pre.style.color = "blue"
 } */
