@@ -25,7 +25,12 @@
 <script>
 var pre = document.querySelector("#pre");
 pre.setAttribute("contenteditable", "true");
+try{
 pre.contentEditable="plaintext-only";
+} catch (e) {
+pre.contentEditable="true";
+console.log(e)
+}
 
 var inputString = window.location.search.substring(1); 
 var processedString = LZString.decompressFromEncodedURIComponent(inputString);
