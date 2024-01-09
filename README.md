@@ -1,4 +1,4 @@
-# txt.e1e1e1.net
+# txt.ibid.work
 
 txt takes plain text and converts it to a URL search query that can be shared without ever touching the server.
 
