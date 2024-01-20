@@ -13,3 +13,4 @@ According to the developer of itty.bitty, most browsers support a minimum of [20
 ## To-do
 - Drag text file into field
 - Implement a YAML metadata function (to fill `<meta>` head elements like `<title>`)
+- Add Warning before clicking `About` button
