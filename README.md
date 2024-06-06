@@ -12,5 +12,7 @@ According to the developer of itty.bitty, most browsers support a minimum of [20
 
 ## To-do
 - Drag text file into field
+- Encryption
+  - Really simple little [encrypt/decrypt](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/decrypt#supported_algorithms) function before appending to the url
 - Implement a YAML metadata function (to fill `<meta>` head elements like `<title>`)
-- Add Warning before clicking `About` button
+- !!! Add Warning before clicking `About` button !!!
