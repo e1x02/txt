@@ -1,4 +1,4 @@
-# txt.ibid.work
+# txt.urls.loan
 
 txt takes plain text and converts it to a URL search query that can be shared without ever touching the server.
 
